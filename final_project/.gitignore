@@ -1,0 +1,7 @@
+objs/
+*.o
+*.d
+*.elf
+*.bin
+*.list
+*~
