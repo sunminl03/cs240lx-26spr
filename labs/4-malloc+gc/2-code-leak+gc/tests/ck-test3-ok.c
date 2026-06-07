@@ -25,6 +25,7 @@ void free_one(void *p) {
     let blk = h->block_id;
 
     ckfree(p);
+    // output("after ckfree in freeone\n");
     if(ck_ptr_is_alloced(p))
         panic("we just allocated %p but is free?\n", p);
 
@@ -41,8 +42,10 @@ void notmain(void) {
     for(int i = 0; i < N; i++) 
         allocs[i] = alloc_one(i+1);
 
-    for(int i = N-1; i>=0; i--) 
+    for(int i = N-1; i>=0; i--) {
+        // output("trying freeing block %d\n", i+1);
         free_one(allocs[i]);
+    }
 
     trace("SUCCESS: alloc/free %d blocks\n", N);
 }

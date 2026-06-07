@@ -18,6 +18,8 @@ unsigned pixie_stop(void);
 // additional routines.
 void pixie_dump(unsigned N);
 
+void pixie_reset(void);
+
 // 0 = quiet, !0 = chatty
 void pixie_verbose(int verbose_p);
 

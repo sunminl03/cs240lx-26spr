@@ -1,0 +1,4 @@
+TRACE:notmain:should *not* have an error because no other thread touches
+TRACE:notmain:should be exclusive: addr=0x104000, state=<EXCLUSIVE>
+TRACE:notmain:should be SHARED: addr=0x104000, state=<SHARED>
+TRACE:notmain:SUCCESS: load should pass

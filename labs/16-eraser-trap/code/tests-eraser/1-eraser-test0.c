@@ -23,7 +23,9 @@ void notmain() {
     trace("should be exclusive: addr=%p, state=%s\n", x, eraser_state_s(x));
     eraser_expect(x, SH_EXCLUSIVE);
 
+    output("here1\n");
     get32(x);    // not an error 
+    output("here1\n");
     get32(x);    // not an error 
     get32(x);    // not an error 
     get32(x);    // not an error 

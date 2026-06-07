@@ -1,0 +1,11 @@
+DEBUG:done with options: dev name=</dev/cu.usbserial-110>, pi-prog=<./int-compile.bin>, trace=0
+opened tty port </dev/cu.usbserial-110>.
+DEBUG:my-install: tty-usb=</dev/cu.usbserial-110> program=<./int-compile.bin>: about to boot
+TRACE:simple_boot: sending 4128 bytes, crc32=5bd9c306
+BOOT:waiting for a start
+BOOT:bootloader: Done.
+cost of generic-int calling: 27593 cycles (x10) <generic_call_int(intv,n)>
+cost of specialized int calling: 15493 cycles (x10) <trampoline()>
+DONE!!!
+
+bootloader: pi exited.  cleaning up

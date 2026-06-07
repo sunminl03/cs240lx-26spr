@@ -1,0 +1,36 @@
+opened tty port </dev/cu.usbserial-310>.
+pi-install: tty-usb=</dev/cu.usbserial-310> program=<./tests/gc-test8-gc-reachable.bin> about to boot
+TRACE:simple_boot: sending 12156 bytes, crc32=9b33f383
+waiting for a start
+putting code
+bootloader: Done.
+listening on ttyusb=</dev/cu.usbserial-310>
+GC test8: reachable heap objects should stay live until the root is cleared.
+TRACE:ckalloc:allocated block id = 1TRACE:ckalloc:allocated block id = 2TRACE:notmain:with a live root: should not leak
+---------------------------------------------------------
+checking for leaks:
+TRACE:sweep_leak:	GC:Checked 2 blocks.
+TRACE:sweep_leak:		GC:SUCCESS: No leaks found!
+----------------------------------------------------------
+TRACE:check_no_leak:GC: SUCCESS: no leaks!
+TRACE:notmain:after clearing the root: should free the root and child
+---------------------------------------------------------
+compacting:
+TRACE:sweep_free:GC:FREEing block id=1 [addr=0x101f50]
+TRACE:sweep_free:GC:FREEing block id=2 [addr=0x101e98]
+TRACE:sweep_free:	GC:Checked 2 blocks, freed 2, 12 bytes
+TRACE:notmain:second gc: should free nothing
+---------------------------------------------------------
+compacting:
+TRACE:sweep_free:	GC:Checked 0 blocks, freed 0, 0 bytes
+---------------------------------------------------------
+checking for leaks:
+TRACE:sweep_leak:	GC:Checked 0 blocks.
+TRACE:sweep_leak:		GC:SUCCESS: No leaks found!
+----------------------------------------------------------
+TRACE:check_no_leak:GC: SUCCESS: no leaks!
+DONE!!!
+
+Saw done
+
+bootloader: pi exited.  cleaning up

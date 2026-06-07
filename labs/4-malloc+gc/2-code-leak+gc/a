@@ -1,0 +1,13 @@
+TRACE:check_no_leak:GC: SUCCESS: no leaks!
+TRACE:check_no_leak:GC: SUCCESS: no leaks!
+TRACE:notmain:after clearing the root: should free the root and child
+TRACE:notmain:second gc: should free nothing
+TRACE:notmain:with a live root: should not leak
+TRACE:sweep_free:	GC:Checked 0 blocks, freed 0, 0 bytes
+TRACE:sweep_free:	GC:Checked 2 blocks, freed 2, 12 bytes
+TRACE:sweep_free:GC:FREEing block id=1 
+TRACE:sweep_free:GC:FREEing block id=2 
+TRACE:sweep_leak:		GC:SUCCESS: No leaks found!
+TRACE:sweep_leak:		GC:SUCCESS: No leaks found!
+TRACE:sweep_leak:	GC:Checked 0 blocks.
+TRACE:sweep_leak:	GC:Checked 2 blocks.

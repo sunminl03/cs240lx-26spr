@@ -4,6 +4,8 @@
 #include "i2c.h"
 #include "bit-support.h"
 #include <limits.h>
+#include <stdlib.h> // Required for abs()
+#include <math.h> 
 
 // both gyro and accel return x,y,z readings: it makes things
 // a bit simpler to bundle these together.
@@ -26,7 +28,7 @@ xyz_print(const char *msg, imu_xyz_t xyz) {
 // set before won't be preserved.
 void mpu6050_reset(uint8_t addr);
 
-
+int temp_measure(uint8_t addr);
 /************************************************************************
  * trivial accel interface: you may want to extend it w/ any i2c information
  * needed.
@@ -54,9 +56,11 @@ enum {
 // likely want to extend so you can specify sample rate as
 // well as which i2c is being used (for multiple devices).
 accel_t mpu6050_accel_init(uint8_t addr, unsigned accel_g);
+void mpu6050_accel_selfcheck_init(uint8_t addr);
 
 // blocking read of accel: returns raw (x,y,z) reading.
 imu_xyz_t accel_rd(const accel_t *h);
+imu_xyz_t accel_rd_selftest(const accel_t *h);
 
 // scale a reading returned by <accel_rd> to the sensitivity
 // the device was initialized to.
@@ -86,13 +90,15 @@ enum {
 // initialize gyroscope.  scaling set to the given degress
 // per second.
 gyro_t mpu6050_gyro_init(uint8_t addr, unsigned gyro_dps);
+void mpu6050_gyro_selftest_init(uint8_t addr);
 
 // raw reading of gyro.
 imu_xyz_t gyro_rd(const gyro_t *h);
+imu_xyz_t gyro_rd_selftest(const gyro_t *h);
 
 // scale reading by the initialized dps.
+static int dps_to_scale(unsigned dps);
 imu_xyz_t gyro_scale(gyro_t *h, imu_xyz_t xyz);
-
 
 /*************************************************************************
  * used to talk to i2c: generally won't use these in the client.

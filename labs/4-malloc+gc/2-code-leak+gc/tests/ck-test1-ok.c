@@ -9,6 +9,7 @@ void notmain(void) {
 
     // should be allocated!
     let h = ck_ptr_is_alloced(p);
+    // output("ehre");
     if(!h)
         panic("we just allocated %p\n", p);
     let blk = h->block_id;
@@ -19,6 +20,7 @@ void notmain(void) {
         panic("impossible: %p not in its block\n", p);
 
     ckfree(p);
+    // output("after free");
     if(ck_ptr_is_alloced(p))
         panic("we just allocated %p but is free?\n", p);
 

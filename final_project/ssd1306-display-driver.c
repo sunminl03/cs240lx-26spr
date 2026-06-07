@@ -5,6 +5,9 @@
 static uint8_t i2c_buffer[SSD1306_I2C_BUFFER_SIZE];
 static uint8_t *display_buffer = i2c_buffer + 1;
 
+// 1. Done! Signal 
+// 2. fill in between lines 
+// 3. 
 // Helper function to send a byte over I2C
 void ssd1306_display_send_command(uint8_t cmd) {
   uint8_t cmd_buf[2] = {0x00, cmd};
@@ -30,10 +33,10 @@ void ssd1306_display_init(void) {
   ssd1306_display_send_command(0x40); // offset = 0
 
   // 4. Set segment re-map [SSD1306 pg 36]
-  ssd1306_display_send_command(0xA0);//column address 0 is mapped to SEG0
+  ssd1306_display_send_command(0xA1); // column address 0 mapped to SEG127 (horizontal flip)
 
   // 5. Set COM output scan direction
-  ssd1306_display_send_command(0xC0);
+  ssd1306_display_send_command(0xC8); // scan from COM[N-1] to COM0 (vertical flip)
 
   // 6. Set COM pins hardware configuration [SSD1306 pg 40]
   ssd1306_display_send_command(0xDA); // 
@@ -97,13 +100,16 @@ void ssd1306_display_fill_white(void) {
 }
 
 void ssd1306_display_draw_pixel(uint16_t x, uint16_t y, color_t color) {
-  // https://github.com/adafruit/Adafruit_SSD1306/blob/master/Adafruit_SSD1306.cpp#L648
-  // May need to perform additional coordinate transforms,
-  // depending on what coordinate system you want to use with
-  // the display.
+  // 0xA1+0xC8 in init rotate the hardware 180 degrees, so compensate here
+  // so that draw_pixel(x,y) reliably lights up visual position (x,y).
+  x = (SSD1306_DISPLAY_WIDTH  - 1) - x;
+  y = (SSD1306_DISPLAY_HEIGHT - 1) - y;
 
   switch (color) {
   case COLOR_WHITE:
+    display_buffer[(y / 8) * SSD1306_DISPLAY_WIDTH + x] |= (1 << (y & 7));
+    display_buffer[(y / 8) * SSD1306_DISPLAY_WIDTH + x + 1] |= (1 << (y & 7));
+    display_buffer[(y / 8) * SSD1306_DISPLAY_WIDTH + x] |= (1 << (y & 7));
     display_buffer[(y / 8) * SSD1306_DISPLAY_WIDTH + x] |= (1 << (y & 7));
     break;
   case COLOR_BLACK:

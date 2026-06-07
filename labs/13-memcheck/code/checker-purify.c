@@ -48,14 +48,44 @@ void purify_free_raw(void *p, src_loc_t l) {
 
     memtrace_trap_enable();
 }
-
-static int handler(void *data, fault_ctx_t *f) {
-    todo("implement this code!  if error: reboot");
+void  purify_error(hdr_t *hdr, void *addr) {
+    int offset = ck_illegal_offset(hdr, addr);
+    char s[20];
+    if (hdr->state == FREED) {
+        memcpy(s, "FREED", 10);
+    } else {
+        memcpy(s, "allocated", 15);
+    }
+    if (offset < 0) {
+        ck_error(hdr, " illegal store to to %s block at :  is %d bytes before legal mem (block size=%d)\n", s, offset, hdr->nbytes_alloc); 
+    } else if (offset > 0) {
+        ck_error(hdr, " illegal store to to %s block at :  is %d bytes after legal mem (block size=%d)\n", s, offset, hdr->nbytes_alloc); 
+    } else {
+        ck_error(hdr, " use after free at : illegal store to to  within freed block\n");
+    }
+    clean_reboot();
+}
+static int purify_handler(void *data, fault_ctx_t *f) {
+    // todo("implement this code!  if error: reboot");
+    uint32_t mem_addr = f->addr; // mem addr of fault 
+    int load_p = f->load_p;
+    if (load_p) {
+        trace(": load from address %x\n", mem_addr);
+    } else {
+        trace(": store to address %x\n", mem_addr);
+    }
+    hdr_t * hdr = ck_ptr_is_alloced((void *)mem_addr); 
+    if (hdr != NULL) {
+        return MEMTRACE_OK;
+    } else {
+        hdr_t * invalid_hdr = ck_get_containing_blk((void *) mem_addr); 
+        purify_error(invalid_hdr, (void *)mem_addr);
+    }
     return MEMTRACE_OK;
 }
 
 void purify_init(void) {
-    memtrace_init(0, handler, 0, dom_trap);
+    memtrace_init(0, purify_handler, 0, dom_trap);
     memtrace_trap_enable();
     memtrace_yap_off();
 }

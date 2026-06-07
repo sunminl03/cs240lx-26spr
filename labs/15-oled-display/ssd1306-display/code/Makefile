@@ -1,5 +1,7 @@
-PROGS := 0-fill-screen.c
+# PROGS := 0-fill-screen.c
 # PROGS := 1-draw-commands.c
+# PROGS := 2-moving_lines.c
+PROGS := 3-cat.c
 
 COMMON_SRC := ssd1306-display-driver.c
 COMMON_SRC += standard-ascii-font.c

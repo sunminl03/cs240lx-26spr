@@ -13,17 +13,17 @@ void notmain(void) {
   ssd1306_display_init();
   delay_ms(100);
 
-  // Draw individual pixel
-  ssd1306_display_draw_pixel(0, 0, COLOR_WHITE);
+  // // Draw individual pixel
+  // ssd1306_display_draw_pixel(0, 0, COLOR_WHITE);
 
-  // Draw horizontal line
-  ssd1306_display_draw_horizontal_line(0, 100, 20, COLOR_WHITE);
+  // // Draw horizontal line
+  // ssd1306_display_draw_horizontal_line(0, 100, 20, COLOR_WHITE);
 
-  // Draw vertical line
-  ssd1306_display_draw_vertical_line(0, 50, 127, COLOR_WHITE);
+  // // Draw vertical line
+  // ssd1306_display_draw_vertical_line(0, 50, 127, COLOR_WHITE);
 
-  // Draw filled rectangle
-  ssd1306_display_draw_fill_rect(40, 30, 50, 20, COLOR_WHITE);
+  // // Draw filled rectangle
+  // ssd1306_display_draw_fill_rect(40, 30, 50, 20, COLOR_WHITE);
 
   // Draw some text
   char *text = "hello cs340lx!";

@@ -60,7 +60,20 @@ static inline void step(step_t *s, int dir) {
     assert(dir == forward || dir == backward);
     assert(s->step_delay);
 
-    unimplemented();
+    // direction. if dir = forward, set dir pin on. 
+    if(dir == forward)
+        gpio_set_on(s->dir_pin);
+    else
+        gpio_set_off(s->dir_pin);
+    
+    delay_us(s->dir_delay); // after set direction, wait 
+    // delay_us(s -> step_delay);
+    gpio_set_on(s->step_pin);
+    delay_us(s -> step_delay);
+    gpio_set_off(s->step_pin); 
+    delay_us(s -> step_delay); // after step, delay
+
+    // unimplemented();
 }
 
 static inline void step_forward(step_t *s) { step(s,forward); }
@@ -69,7 +82,11 @@ static inline void step_backward(step_t *s) { step(s,backward); }
 // step <n> steps in direction <dir>.  this lets the driver
 // optimize ramp up and ramp down speeds.
 static inline void step_n(step_t *s, int dir, unsigned n) {
-    todo("option: implement so you go fast(er) but don't miss steps.\n");
+    // todo("option: implement so you go fast(er) but don't miss steps.\n");
+    delay_us(s->step_delay);
+    for (int i = 0; i < n; i++) {
+        step(s, dir);
+    }
 }
 
 #endif

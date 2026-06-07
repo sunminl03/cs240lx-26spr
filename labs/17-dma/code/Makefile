@@ -2,16 +2,16 @@
 # PROGS += 1-dma-blink.c
 # PROGS += 2-dma-delay.c
 # PROGS += 3-dma-blink.c
-# PROGS += 4-dma-inc.c
-# PROGS += 5-dma-add.c
-# PROGS += 6-dma-blink.c
+PROGS := 4-dma-inc.c
+PROGS += 5-dma-add.c
+PROGS += 6-dma-blink.c
 
 # PROGS = riscv-dma-harness.c
 # PROGS = mul-harness.c
-PROGS = riscv-dma-demo.c
-COMMON_SRC += printf.c
-STAFF_OBJS += staff-stamps.o
-STAFF_OBJS += staff-riscv-dma.o
+# PROGS = riscv-dma-demo.c
+# COMMON_SRC += printf.c
+# STAFF_OBJS += staff-stamps.o
+# STAFF_OBJS += staff-riscv-dma.o
 
 # if you need to override the install
 # BOOTLOADER = my-install

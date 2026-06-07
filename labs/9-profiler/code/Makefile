@@ -1,14 +1,24 @@
 # very simple tests. start here.
 
-PROGS := tests/0-nop-test.c
-PROGS += tests/0-prof-test.c
-PROGS += tests/0-reg-test.c
+# PROGS := tests/0-nop-test.c
+# PROGS += tests/0-prof-test.c
+# PROGS += tests/0-reg-test.c
 
 # when you want to start profiling
-# PROGS := tests/1-prof-test.c
+# PROGS += tests/1-prof-test.c
+# PROGS += tests/2-uart-test.c
+# PROGS += tests/4-nop-test.c
+# PROGS += tests/5-call-test.c
 
-COMMON_SRC := ss-pixie.c
+# PROGS += tests/ex-prof-test2.c
+# PROGS += tests/ex-prof-test3.c
+# PROGS += tests/ex-known-cycle.c
+PROGS += tests/ex-gpio-test.c
+
+COMMON_SRC += ss-pixie.c
 COMMON_SRC += ss-pixie-asm.S
+COMMON_SRC += gpio_raw.c
+COMMON_SRC += gpio.c
 
 # use a different start so we have routines in known
 # locations.

@@ -1,0 +1,32 @@
+opened tty port </dev/cu.usbserial-310>.
+pi-install: tty-usb=</dev/cu.usbserial-310> program=<./tests-eraser/2-eraser-test0.bin> about to boot
+TRACE:simple_boot: sending 36604 bytes, crc32=39805156
+waiting for a start
+putting code
+bootloader: Done.
+listening on ttyusb=</dev/cu.usbserial-310>
+herehere outside ifstatement
+exclusive
+TRACE:notmain:should *not* have an error because no other thread touches
+TRACE:notmain:should be exclusive: addr=0x104000, state=<EXCLUSIVE>
+exclusive
+exclusive
+TRACE:notmain:should be SHARED: addr=0x104000, state=<SHARED>
+not exclusive
+lockset[2] = -476053504
+not exclusive
+lockset[2] = -476053504
+not exclusive
+lockset[3] = -476053504
+not exclusive
+lockset[3] = -476053504
+not exclusive
+lockset[3] = -476053504
+not exclusive
+lockset[1] = -476053504
+TRACE:notmain:SUCCESS: load should pass
+DONE!!!
+
+Saw done
+
+bootloader: pi exited.  cleaning up

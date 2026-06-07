@@ -11,9 +11,14 @@ enum { pix_pin = 21 };
 
 // crude routine to write a pixel at a given location.
 void place_cursor(neo_t *h, int i) {
+
+    neopix_write(h,i-5,0xff,0,0);
+    neopix_write(h,i-4,0,0xff,0);
+    neopix_write(h,i-3,0,0,0xff);
     neopix_write(h,i-2,0xff,0,0);
     neopix_write(h,i-1,0,0xff,0);
     neopix_write(h,i,0,0,0xff);
+    // neopix_write(h,i-2,0xff,0,0);
     neopix_flush(h);
 }
 
@@ -33,8 +38,14 @@ void notmain(void) {
                 output("loop %d\n", j);
                 for(int i = 0; i < npixels; i++) {
                     place_cursor(&h,i);
-                    delay_ms(10-j);
+                    // delay_ms(1);
+                    delay_ncycles(cycle_cnt_read(), 1);
+                    // delay_ms(10-j);
                 }
+                // for(int i = 0; i < npixels; i++) {
+                //     place_cursor(&h,i);
+                //     delay_ms(10-j);
+                // }
             }
         }
     }

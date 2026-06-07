@@ -6,11 +6,11 @@
 __attribute__((noinline)) 
 void
 measure_nops(const char *msg, int n) {
-    uint32_t cyc_s, cyc_e;
-    uint32_t inst0_s, inst0_e;
-    uint32_t stall1_s, stall1_e;
+    // uint32_t cyc_s, cyc_e;
+    // uint32_t inst0_s, inst0_e;
+    // uint32_t stall1_s, stall1_e;
 
-
+    asm volatile(".align 5");
     pmu_stmt_measure(msg, 
             inst_cnt, 
             inst_stall, 

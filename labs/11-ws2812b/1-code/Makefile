@@ -1,11 +1,12 @@
 # do this last.
-PROGS = 2-neopix.c 
+PROGS = 3-lightsaber.c 
+# PROGS = 2-neopix.c 
 # do this third:
-PROGS = 1-rgb.c  
+# PROGS = 1-rgb.c  
 # do this second:
-PROGS = 1-blink.c  
+# PROGS = 1-blink.c  
 # do this first.
-PROGS = 0-timing-check.c 
+# PROGS = 0-timing-check.c 
 
 INC += -I../0-timing
 

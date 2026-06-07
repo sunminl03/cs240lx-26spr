@@ -57,7 +57,7 @@ void notmain(void) {
     uint8_t dev_addr = 0b1101000;
 
     enum { 
-        WHO_AM_I_REG      = 0x75, 
+        WHO_AM_I_REG      = 0x75, // pg 8: WHOAMI Reg number is 0x75 
         WHO_AM_I_VAL = 0x68,       
     };
 

@@ -215,6 +215,6 @@ static inline void ck_verbose_set(int v) {
 //  - give an option to fix errors so that you can keep going.
 int ck_heap_errors(void);
 
-
+void silent_heap_check(void);
 
 #endif

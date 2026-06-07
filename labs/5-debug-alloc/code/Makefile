@@ -6,27 +6,28 @@
 #   3. start working through the tests.
 #   4. replace all our code with yours.
 #   5. profit$.
-
+CFLAGS += -finstrument-functions
 #######################################################################
 # <ckalloc.c> is what you work on: copy yours over b/c we'll be
 # modifying it.
 #
+COMMON_SRC += ckalloc_ext.c
 # COMMON_SRC += ckalloc.c
-STAFF_OBJS += staff-ckalloc.o
+# STAFF_OBJS += staff-ckalloc.o
 
 # if you want to work on one at a time.
-PROGS := tests/part1-test0-bug.c     
-# PROGS := tests/part1-test1-no-bug.c  
-# PROGS := tests/part1-test2-bug.c     
-# PROGS := tests/part1-test3-bug.c	
-# PROGS := tests/part1-test4-bug.c
-# PROGS := tests/part1-test5-no-bug.c
-# PROGS := tests/part1-test6-bugs.c
+PROGS += tests/part1-test0-bug.c     
+PROGS += tests/part1-test1-no-bug.c  
+PROGS += tests/part1-test2-bug.c     
+PROGS += tests/part1-test3-bug.c	
+PROGS += tests/part1-test4-bug.c
+PROGS += tests/part1-test5-no-bug.c
+PROGS += tests/part1-test6-bugs.c
 # PROGS := tests/part1-test7-bug.c
-# PROGS := tests/part1-test8-bugs.c
+PROGS += tests/part1-test8-bugs.c
 
 # all the tests.
-PROGS := $(wildcard tests/part1-test[0-9]*.c)
+# PROGS := $(wildcard tests/part1-test[0-9]*.c)
 
 #######################################################################
 # when all the tests pass with your <ckalloc.c>: swap out our code.
@@ -34,19 +35,19 @@ PROGS := $(wildcard tests/part1-test[0-9]*.c)
 # note: easiest for isolation: just copy over.  or you could link against
 # your live copies (just make sure you don't break them later b/c blast
 # radius is bigger :)
-#   L := /home/engler/class/cs240lx-26spr/labs/4-malloc+gc/2-code-leak+gc/
+#   L := /Users/sunminlee/cs240lx-26spr/labs/4-malloc+gc/2-code-leak+gc
 #   COMMON_SRC += $(L)/ck-gc.c
 #   COMMON_SRC += $(L)/gc-asm.S
-#   COMMON_SRC = $(L)/kr-malloc.c
+#   COMMON_SRC += $(L)/kr-malloc.c
 
-#COMMON_SRC = kr-malloc.c
-STAFF_OBJS += staff-kr-malloc.o
+COMMON_SRC += kr-malloc.c
+# STAFF_OBJS += staff-kr-malloc.o
 
-#COMMON_SRC += ck-gc.c
-STAFF_OBJS += staff-ck-gc.o
+COMMON_SRC += ck-gc.c
+# STAFF_OBJS += staff-ck-gc.o
 
-#COMMON_SRC += gc-asm.S
-STAFF_OBJS += staff-gc-asm.o
+COMMON_SRC += gc-asm.S
+# STAFF_OBJS += staff-gc-asm.o
 
 #######################################################################
 

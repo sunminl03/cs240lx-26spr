@@ -74,12 +74,36 @@ static int button_is_pressed(void) {
     return gpio_read(BUTTON_PIN) == 0;
 }
 
+static void oled_draw_touch_point(uint32_t x, uint32_t y) {
+    ssd1306_display_draw_pixel(x, y, COLOR_WHITE);
+    if (x > 0)
+        ssd1306_display_draw_pixel(x - 1, y, COLOR_WHITE);
+    if (x + 1 < SSD1306_DISPLAY_WIDTH)
+        ssd1306_display_draw_pixel(x + 1, y, COLOR_WHITE);
+    if (y > 0)
+        ssd1306_display_draw_pixel(x, y - 1, COLOR_WHITE);
+    if (y + 1 < SSD1306_DISPLAY_HEIGHT)
+        ssd1306_display_draw_pixel(x, y + 1, COLOR_WHITE);
+}
+
 // Show a short message centered on OLED, then pause.
 static void oled_message(const char *msg, uint32_t ms) {
     ssd1306_display_clear();
     uint16_t x = 10;
-    for (int i = 0; msg[i]; i++, x += 8)
-        ssd1306_display_draw_character_size(x, 28, msg[i], COLOR_WHITE, 1, 1);
+    uint16_t y = 28;
+
+    for (int c = 0; msg[c]; c++, x += 8) {
+        for (int8_t i = 0; i < 5; i++) {
+            uint8_t line = standard_ascii_font[(unsigned)msg[c] * 5 + i];
+            for (int8_t j = 0; j < 7; j++, line >>= 1) {
+                if (line & 1) {
+                    uint16_t rx = (SSD1306_DISPLAY_WIDTH - 1) - (x + i);
+                    uint16_t ry = (SSD1306_DISPLAY_HEIGHT - 1) - (y + j);
+                    ssd1306_display_draw_pixel(rx, ry, COLOR_WHITE);
+                }
+            }
+        }
+    }
     ssd1306_display_show();
     delay_ms(ms);
 }
@@ -115,9 +139,10 @@ void notmain(void) {
 
         if (touched) {
             // draw on OLED: scale touch (0-4095) to OLED pixels (128x64)
-            uint16_t ox = x * SSD1306_DISPLAY_WIDTH  / 4096;
-            uint16_t oy = y * SSD1306_DISPLAY_HEIGHT / 4096;
-            ssd1306_display_draw_pixel(ox, oy, COLOR_WHITE);
+            uint32_t ox, oy;
+            sig_map_touch_to_pixel(x, y, SSD1306_DISPLAY_WIDTH,
+                                   SSD1306_DISPLAY_HEIGHT, &ox, &oy);
+            oled_draw_touch_point(ox, oy);
             point_count++;
             if (point_count % 5 == 0)               // OLED: update every 5 points
                 ssd1306_display_show();

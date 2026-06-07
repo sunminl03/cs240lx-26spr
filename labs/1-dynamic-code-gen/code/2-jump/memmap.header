@@ -11,25 +11,18 @@ SECTIONS
 
     /* our simple a.out header.  will add as needed. */
     .crt0_header LINK_ADDR : {
-        /* magic cookie for sanity checking */
-        LONG(0x12345678);
-        /* 
-         * the second word is the size of the header.  this lets us avoid changing
-         * a bunch of code as we add fields.  You should copy the entire header
-         * and just jump over it.
-         */
-        LONG(SIZEOF(.crt0_header));
+        /* Branch instr that jumps over header */
+        LONG(0xEA000000 | ((SIZEOF(.crt0_header) - 8) >> 2));
+        
+        __hello_string__ = .;
 
-        /* Where we are linked at */
-        LONG(LINK_ADDR);
-        /* 
-         * total size of the binary file in bytes not including the header.
-         * NOTE: bss data is *not* in the .bin: it contains only zeros so we
-         * do not need to record them, just its size.
-         */
-        LONG(SIZEOF(.text) + SIZEOF(.data) + SIZEOF(.rodata) );
-
-        /* can add stuff below and loader should still work */
+        /* hello */
+        BYTE(0x68)   /* h */
+        BYTE(0x65)   /* e */
+        BYTE(0x6c)   /* l */
+        BYTE(0x6c)   /* l */
+        BYTE(0x6f)   /* o */
+        BYTE(0x00)   /* \0 */
     }
 	.text :  { KEEP(*(.text.boot))  *(.text*) }
     .data :   { . = ALIGN(4); *(.data*)   . = ALIGN(4); } 

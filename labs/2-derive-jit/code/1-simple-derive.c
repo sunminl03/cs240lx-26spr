@@ -205,6 +205,22 @@ solve_for_reg(const char *name,
         panic("reg should be contig: is [%s]\n", BITS_STR(changed));
     return changed;
 }
+// returns the uint32_t encoding of <add dst, src1, src2>
+void gen_add(uint32_t opcode, uint32_t dst, uint32_t src1, uint32_t src2) {
+    output ("static inline uint32_t armv6_add(uint32_t dst, uint32_t src1, uint32_t src2) { \n");
+    output ("   return %x | dst << %x | src1 << %x | src2 << %x \n", opcode, dst, src1, src2);
+    output ("}\n");
+}
+
+uint32_t lowest_bit(uint32_t x) {
+    for (int i = 0; i < 32; i++) {
+        if (x & 1) {
+            return i;
+        }
+        x >>= 1;
+    }
+    return 32;
+}
 
 void notmain() { 
     uint32_t src2 = solve_for_reg("src2", derive_add_src2, 16);
@@ -212,13 +228,27 @@ void notmain() {
     uint32_t dst  = solve_for_reg("src2", derive_add_dst, 16);
     uint32_t opcode = ~(src2|src1|dst);
 
+    uint32_t *inst = find_sentinal((void*)derive_add_src2, 128) + 1;
+    uint32_t opcode_bits = inst[0] & opcode;
+
     output("src2    = [%s]\n", BITS_STR(src2));
     output("dst     = [%s]\n", BITS_STR(dst));
     output("src1    = [%s]\n", BITS_STR(src1));
     output("opcode  = [%s]\n", BITS_STR(opcode));
 
+    gen_add(opcode_bits, lowest_bit(dst), lowest_bit(src1), lowest_bit(src2));
+
+
+
     return;
 
+    
+    
+    
+    
+    
+    
+    
     output("going to try cheating\n");
     uint32_t dst_cheat  = solve_for_reg("src2", derive_add_dst_cheat, 2);
     if(dst_cheat != dst)

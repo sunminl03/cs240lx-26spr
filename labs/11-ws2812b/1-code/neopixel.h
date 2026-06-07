@@ -43,7 +43,10 @@ neopix_write(neo_t *h, uint32_t pos, uint8_t r, uint8_t g, uint8_t b) {
     // silently clip
     if(pos >= h->npixel)
         return;
-    todo("write pixel value to position <pos> in <pixels>");
+    // todo("write pixel value to position <pos> in <pixels>");
+    h->pixels[pos].r = r;
+    h->pixels[pos].g = g;
+    h->pixels[pos].b = b;
 }
 
 // write the pixel out with [r,g,b] using <WS2812b.h>
@@ -56,7 +59,12 @@ void neopix_sendpixel(neo_t *h, uint8_t r, uint8_t g, uint8_t b) {
 //  2. then flush.  
 //  3. memset the array to 0 after.
 static inline void neopix_flush(neo_t *h) {
-    todo("treset");
+    // todo("treset");
+    for (int i = 0; i < h->npixel; i++) {
+        neopix_sendpixel(h, h->pixels[i].r, h->pixels[i].g, h->pixels[i].b);
+    }
+    pix_flush(h->pin);
+    memset(h->pixels, 0xff, h->npixel * sizeof h->pixels[0]);
 }
 
 // immediately write black/off (0,0,0) to every pixel upto 

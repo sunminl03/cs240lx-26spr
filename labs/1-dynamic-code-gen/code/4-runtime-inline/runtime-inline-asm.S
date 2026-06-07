@@ -4,8 +4,10 @@
 .globl PUT32_inline
 put32_inline:
 PUT32_inline:
-    asm_todo("implement this code after get32 works")
-
+    @ asm_todo("implement this code after get32 works")
+    @ r0 = mem address, r1 = value to be stored, r2 = lr 
+    mov r2, lr
+    b PUT32_inline_helper
     @ put32_inline will simply return to caller since we
     @ we pass lr in r2  along with the original arguments.
 
@@ -21,9 +23,9 @@ PUT32_inline:
 get32_inline:
 GET32_inline:
 
-    @ we pass lr in r1 along with original argument in r0.
+    @ we pass lr in r1 along with original argument in r0, which holds the address of memory location 
     @ get32_inline will simply return to the caller
-    mov r1, lr
+    mov r1, lr      @ lr is the instruction that will be called after bl GET32_inline instruction
     b GET32_inline_helper
 
     ldr r0,[r0]     @ load address held in r0 into r0

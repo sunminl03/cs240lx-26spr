@@ -1,0 +1,11 @@
+DEBUG:done with options: dev name=</dev/cu.usbserial-310>, pi-prog=<./0-test-id.bin>, trace=0
+opened tty port </dev/cu.usbserial-310>.
+DEBUG:my-install: tty-usb=</dev/cu.usbserial-310> program=<./0-test-id.bin>: about to boot
+TRACE:simple_boot: sending 7792 bytes, crc32=1f0700a8
+BOOT:waiting for a start
+BOOT:bootloader: Done.
+PANIC:0-test-id.c:notmain:29:Initial probe failed: expected 1101000 (0x68), have 0 (0x0)
+
+DONE!!!
+
+bootloader: pi exited.  cleaning up

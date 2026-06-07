@@ -1,5 +1,5 @@
 # run all tests
-PROGS += tests-memtrace/0-test-basic.c
+# PROGS += tests-memtrace/0-test-basic.c
 PROGS += tests-memtrace/1-test-multi-faults.c
 
 # basic common source.
@@ -7,8 +7,8 @@ COMMON_SRC += memmap-default.c
 COMMON_SRC += sbrk-trap.c
 
 # part 1: switch
-# COMMON_SRC += memtrace.c
-STAFF_OBJS += staff-memtrace.o
+COMMON_SRC += memtrace.c
+# STAFF_OBJS += staff-memtrace.o
 
 INC += -I./includes
 

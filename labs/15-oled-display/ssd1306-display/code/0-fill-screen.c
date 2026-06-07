@@ -7,6 +7,7 @@ void notmain(void) {
   delay_ms(100);
   i2c_init_clk_div(1500);
   delay_ms(100);
+  
 
   // Initialize the display with some settling time
   ssd1306_display_init();

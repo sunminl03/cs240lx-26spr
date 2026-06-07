@@ -1,7 +1,7 @@
 # make sure they all have fairly low error.
 PROGS := 2-write-01.c
-PROGS := 1-ndelay.c
-PROGS := 0-gpio-raw.c
+# PROGS := 1-ndelay.c
+# PROGS := 0-gpio-raw.c
 
 # mess with the optimization level and see what happens!
 # OPT_LEVEL = -O2 -fno-optimize-sibling-calls 

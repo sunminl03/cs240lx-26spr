@@ -26,10 +26,13 @@ void notmain() {
 	ident_code[0] =  0xe12fff1e; //   bx  lr
 
     // cast address of array to a function pointer.
+    // fp points to a function that takes an int and returns an int
+    // treat ident_code as a function
 	int (*fp)(int) = (typeof(fp))ident_code;
 
     // we can now call it like any other routine.
-	printk("ident(10) = %d, fp(10) =%d\n", ident(10), fp(10));
+    // fp(10): Since the input argument was already in r0, the return value is also still in r0, so it acts like an identity function.
+	printk("ident(10) = %d, fp(10) =%d\n", ident(10), fp(10)); // 10 is input argument to function.
 	printk("ident(20) = %d, fp(20) =%d\n", ident(10), fp(20));
 
     // do some simple testing

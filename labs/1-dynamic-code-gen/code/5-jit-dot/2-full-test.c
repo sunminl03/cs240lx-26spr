@@ -1,9 +1,10 @@
 // do a bunch of timing tests on jit-dot.  make sure
 // works before you do this; hard to debug.
 #include "jit-dotproduct.h"
+#include "armv6-pmu.h"
 
 static void run_vector_test(
-    unsigned ntrials, 
+    unsigned ntrials, unsigned nruns,
     unsigned n, 
     unsigned percent_0,
     int verbose_p) {
@@ -52,6 +53,22 @@ static void run_vector_test(
         output("   jit:\t\t%d cycles\n", 
             TIME_CYC(d1 = dot_fn(a)));
         assert(d0==d1);
+        // EXTENSION: Use the armv6 performance counters 
+        pmu_stmt_measure("no cache static: inst + branch",
+            inst_cnt,
+            branch_cnt, {
+                volatile uint32_t x = 0;
+                for(unsigned j = 0; j < nruns; j++)
+                    x += vec_dot(a,b,n);
+            });
+
+        pmu_stmt_measure("no cache jit: inst + branch",
+            inst_cnt,
+            branch_cnt, {
+                volatile uint32_t x = 0;
+                for(unsigned j = 0; j < nruns; j++)
+                    x += dot_fn(a);
+            });
     }
 
 
@@ -64,16 +81,33 @@ static void run_vector_test(
         output("   jit:\t\t%d cycles\n", 
             TIME_CYC(d1 = dot_fn(a)));
         assert(d0==d1);
+
+        // EXTENSION: Use the armv6 performance counters 
+        pmu_stmt_measure("cache static: inst + branch",
+            inst_cnt,
+            branch_cnt, {
+                volatile uint32_t x = 0;
+                for(unsigned j = 0; j < nruns; j++)
+                    x += vec_dot(a,b,n);
+            });
+
+        pmu_stmt_measure("cache jit: inst + branch",
+            inst_cnt,
+            branch_cnt, {
+                volatile uint32_t x = 0;
+                for(unsigned j = 0; j < nruns; j++)
+                    x += dot_fn(a);
+            });
     }
 }
 
 void notmain(void) {
     jit_init();
 
-    enum { trials = 2 };
+    enum { trials = 2, nruns = 1000 };
     for(unsigned n = 32; n < 1024; n *= 4) {
         for(unsigned percent_0 = 0; percent_0 < 100;  percent_0 += 15) {
-            run_vector_test(trials, n, percent_0,0);
+            run_vector_test(trials, nruns, n, percent_0,0);
             jit_free_all();
         }
     }

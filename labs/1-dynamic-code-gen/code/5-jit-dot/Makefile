@@ -1,6 +1,6 @@
 PROGS = test-pmu.c
 PROGS = 2-full-test.c
-PROGS += 1-simple-test.c
+# PROGS = 1-simple-test.c
 
 COMMON_SRC = cache-support.S  jit-dotproduct.c
 

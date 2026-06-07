@@ -2,12 +2,13 @@
 
 
 # simplest example.
-PROGS := 0-simple-derive.c
+# PROGS := 0-simple-derive.c
 
 # bit more fancy
-PROGS := 1-simple-derive.c
+# PROGS := 1-simple-derive.c
 
-PROGS := c-for-asm.c
+PROGS := 2-all-derive.c
+# PROGS := c-for-asm.c
 
 # define this if you need to give the device for your pi
 TTYUSB = 

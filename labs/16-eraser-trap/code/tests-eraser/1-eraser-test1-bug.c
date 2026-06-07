@@ -30,7 +30,7 @@ void notmain() {
 
     trace("should get an error b/c we use a different lock\n");
     lock(&l2);
-        put32(x,0x12345678);   // bug
+    put32(x,0x12345678);   // bug
     unlock(&l2);
 
     not_reached();

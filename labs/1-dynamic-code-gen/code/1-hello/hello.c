@@ -31,29 +31,43 @@ static void guard3(void) { asm volatile ("bkpt"); }
 // the routines to implement.
 static inline uint32_t armv6_push(int reg) {
     assert(reg<16);
-    todo("return the machine code to push{reg}\n");
+    // todo("return the machine code to push{reg}\n");
+    return 0b11101001001011010000000000000000 | (1 << reg);
 }
 static inline uint32_t armv6_pop(int reg) {
     assert(reg<16);
-    todo("return the machine code to pop{reg}\n");
+    // todo("return the machine code to pop{reg}\n");
+    return 0b11101000101111010000000000000000 | (1 << reg);
 }
 
 // pc = where the instruction will be put.  this is 
 // needed so that you can compute the offset from <pc>
 // to <addr> which is what gets put in <bl>
 static inline uint32_t armv6_bl(uint32_t bl_pc, uint32_t target) {
-    todo("return the machine code bl to <addr>\n");
+    // todo("return the machine code bl to <addr>\n");
+    int32_t offset = (int32_t) (target - (bl_pc + 8)) >> 2; // make it int32_t to preserve sign 
+    return (0b11101011 << 24) | (offset & 0x00FFFFFF);
 }
 static inline uint32_t armv6_bx(uint32_t reg) {
     assert(reg<16);
-    todo("return the machine code to bx <reg>\n");
+    return (0b1110000100101111111111110001) << 4 | reg;
+    // todo("return the machine code to bx <reg>\n");
+}
+
+static inline uint32_t armv6_mov(uint32_t arg, uint32_t reg) {
+    assert(reg < 16);
+    assert(arg < 256); 
+    return ((0b11100011101000000000000000000000) | (reg << 12)) | arg;
 }
 
 static inline uint32_t 
 armv6_ldr(uint32_t dst_reg, uint32_t src_reg, uint32_t off) {
     assert(dst_reg<16);
     assert(src_reg<16);
-    todo("return the machine code to: ldr <dst>, [<src>+#<off>]\n");
+    // todo("return the machine code to: ldr <dst>, [<src>+#<off>]\n");
+    uint32_t base = 0b111001011001;
+    base = (base << 20) | (src_reg << 16) | (dst_reg << 12) | off;
+    return base;
 }
 
 // generate a dynamic call to hello() 
@@ -82,17 +96,32 @@ void jit_hello(void *fn, void * arg) {
     // to see what value the pc register has when you read it
     // you can look at <prelab-code-pi/4-derive-pc-reg.c>
     // or also read the manual :)
+    // uint32_t ldr_pc = 0;
     if(arg) {
-        todo("extend this code to handle a 32-bit argument!\n");
+        // todo("extend this code to handle a 32-bit argument!\n");
+        code[n++] = armv6_ldr(r0, pc, 8);                // read the code element that is storing argument. 
+        // code[n++] = armv6_mov(r0, (uint32_t)arg);
     }
 
-    uint32_t src = (uint32_t)&code[n];
+    // push lr
+    // mov r0, #0x12345678; ldr r0, [pc, #8]
+    // bl fn
+    // pop lr
+    // bx lr
+    // 0x12345678
+    //
+
+    uint32_t src = (uint32_t)&code[n]; // the instruction address of armv6_push(lr)
     code[n++] = armv6_bl(src, addr);
     code[n++] = armv6_pop(lr);
     code[n++] = armv6_bx(lr);
+    // write 32-bit argument at the end of code array 
+    if (arg) {
+        code[n++] = (uint32_t)arg;
+    }
 
     printk("emitted code at %x to call routine (%x):\n", code, addr);
-    for(int i = 0; i < 4; i++) 
+    for(int i = 0; i < n; i++) 
         printk("code[%d]=0x%x\n", i, code[i]);
 
     void (*fp)(void) = (typeof(fp))code;

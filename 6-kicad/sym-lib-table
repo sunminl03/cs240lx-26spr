@@ -1,0 +1,4 @@
+(sym_lib_table
+	(version 7)
+	(lib (name "cs240lx_pcb") (type "KiCad") (uri "/Users/sunminlee/cs240lx-26spr/cs240lx_pcb.kicad_sym") (options "") (descr ""))
+)

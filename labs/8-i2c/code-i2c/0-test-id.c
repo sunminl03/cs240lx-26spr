@@ -5,8 +5,10 @@
 // read a single device register <reg> from i2c device 
 // <addr> and return the result.
 static uint8_t i2c_get_reg(uint8_t addr, uint8_t reg) {
-    i2c_write(addr, &reg, 1);
-
+    // writing nbytes from reg to addr 
+    if (!i2c_write(addr, &reg, 1)) {
+        panic("write returned 0!\n");
+    }
     uint8_t v;
     i2c_read(addr,  &v, 1);
     return v;

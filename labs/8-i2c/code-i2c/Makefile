@@ -1,6 +1,6 @@
 # uncomment this when your hardware works and start
 # writing the driver.
-# COMMON_SRC = i2c.c
+COMMON_SRC = i2c.c
 
 # use last lab's code
 IMU_DIR := ../../7-imu-i2c/code/
@@ -13,8 +13,8 @@ PROGS = 0-test-id.c
 
 # when done, should use yours.
 # pick either yours or ours.
-# COMMON_SRC += $(IMU_DIR)/mpu-6050.c
-STAFF_OBJS += $(IMU_DIR)/staff-mpu-6050.o
+COMMON_SRC += $(IMU_DIR)/mpu-6050.c
+# STAFF_OBJS += $(IMU_DIR)/staff-mpu-6050.o
 
 # define this if you need to give the device for your pi
 TTYUSB = 

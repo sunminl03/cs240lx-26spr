@@ -1,0 +1,185 @@
+
+When we have 2 nops 
+tests/1-prefetch.c:14: icache off:
+        25 : cycles
+        7 : instruction count
+        28: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:35: icache off:
+        25 : cycles
+        7 : instruction count
+        0: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:56: icache off:
+        32 : cycles
+        5 : instruction count
+        8: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:77: icache off:
+        52 : cycles
+        9 : instruction count
+        24: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:98: icache off:
+        71 : cycles
+        14 : instruction count
+        62: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:119: icache off:
+        121 : cycles
+        22 : instruction count
+        99: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:140: icache off:
+        395 : cycles
+        64 : instruction count
+        307: instruction stall [tlb/cache miss]
+DONE!!!
+
+When we have 3 nops:
+tests/1-prefetch.c:14: icache off:
+        27 : cycles
+        8 : instruction count
+        4: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:35: icache off:
+        39 : cycles
+        6 : instruction count
+        20: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:56: icache off:
+        53 : cycles
+        9 : instruction count
+        24: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:77: icache off:
+        64 : cycles
+        14 : instruction count
+        28: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:98: icache off:
+        112 : cycles
+        22 : instruction count
+        62: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:119: icache off:
+        215 : cycles
+        38 : instruction count
+        150: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:140: icache off:
+        397 : cycles
+        65 : instruction count
+        307: instruction stall [tlb/cache miss]
+DONE!!!
+
+
+When we have 4 nops:
+tests/1-prefetch.c:14: icache off:
+        40 : cycles
+        6 : instruction count
+        19: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:35: icache off:
+        51 : cycles
+        8 : instruction count
+        24: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:56: icache off:
+        64 : cycles
+        13 : instruction count
+        60: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:77: icache off:
+        53 : cycles
+        9 : instruction count
+        30: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:98: icache off:
+        106 : cycles
+        19 : instruction count
+        56: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:119: icache off:
+        204 : cycles
+        35 : instruction count
+        138: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:140: icache off:
+        399 : cycles
+        66 : instruction count
+        307: instruction stall [tlb/cache miss]
+
+When we have 5 nops:
+tests/1-prefetch.c:14: icache off:
+        51 : cycles
+        8 : instruction count
+        23: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:35: icache off:
+        47 : cycles
+        10 : instruction count
+        31: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:56: icache off:
+        51 : cycles
+        8 : instruction count
+        23: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:77: icache off:
+        106 : cycles
+        10 : instruction count
+        90: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:98: icache off:
+        107 : cycles
+        20 : instruction count
+        60: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:119: icache off:
+        208 : cycles
+        36 : instruction count
+        145: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:140: icache off:
+        404 : cycles
+        67 : instruction count
+        314: instruction stall [tlb/cache miss]
+
+When we have 6 nops:
+tests/1-prefetch.c:14: icache off:
+        53 : cycles
+        10 : instruction count
+        23: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:35: icache off:
+        58 : cycles
+        12 : instruction count
+        28: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:56: icache off:
+        79 : cycles
+        11 : instruction count
+        38: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:77: icache off:
+        196 : cycles
+        13 : instruction count
+        90: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:98: icache off:
+        80 : cycles
+        13 : instruction count
+        32: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:119: icache off:
+        228 : cycles
+        37 : instruction count
+        148: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:140: icache off:
+        425 : cycles
+        68 : instruction count
+        315: instruction stall [tlb/cache miss]
+DONE!!!
+
+When we have 7 nops:
+tests/1-prefetch.c:14: icache off:
+        57 : cycles
+        11 : instruction count
+        27: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:35: icache off:
+        55 : cycles
+        10 : instruction count
+        23: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:56: icache off:
+        64 : cycles
+        14 : instruction count
+        28: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:77: icache off:
+        159 : cycles
+        18 : instruction count
+        123: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:98: icache off:
+        137 : cycles
+        21 : instruction count
+        95: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:119: icache off:
+        137 : cycles
+        21 : instruction count
+        95: instruction stall [tlb/cache miss]
+tests/1-prefetch.c:140: icache off:
+        439 : cycles
+        69 : instruction count
+        349: instruction stall [tlb/cache miss]
+        

@@ -19,7 +19,24 @@ cb_t *stamp_add8(ctx_t *ctx, bus_t out8, bus_t lhs8, bus_t rhs8) {
   //  - mechanically, how did you index into the table?
   //  - can you expand that to work for multiple inputs?
   // 
-  todo("implement me!");
+  // todo("implement me!");
+  // static volatile _Alignas(256) uint8_t LHS[256];
+  static volatile _Alignas(256*256) uint8_t SUM[256][256];
+
+  for (int i = 0; i < 256; i++) {
+    for (int j = 0; j < 256; j++) {
+      SUM[i][j] = i + j; 
+    }
+  }
+  bus_t cb1_label = ctx_label(ctx);
+  cb_t *inc8_first_cb_addr = ctx_here(ctx);
+  // destination is cur control block's next next block's 1st byte 
+  ctx_emit_with(ctx, DST_INC | SRC_INC, bus_rel_fld(cb1_label, 2, FLD_SRC, 0), rhs8, 1);
+  // destination is cur control block's next next block's 0th byte 
+  ctx_emit_with(ctx, DST_INC | SRC_INC, bus_rel_fld(cb1_label, 2, FLD_SRC, 1), lhs8, 1);
+  ctx_emit_with(ctx, DST_INC | SRC_INC, out8, bus(&SUM[0][0]), 1);
+
+  return inc8_first_cb_addr;
 }
 
 void test_add8(dma_ch_t *dma, ctx_t *ctx) {
@@ -67,7 +84,47 @@ void test_add8(dma_ch_t *dma, ctx_t *ctx) {
 cb_t *stamp_add8_carry(ctx_t *ctx, bus_t out8, bus_t carry8, bus_t lhs8, bus_t rhs8) {
   // Basically the same as stamp_add8, except you need an extra table
   // You want to write the carry to `carry8`
-  todo("implement me!");
+  // todo("implement me!");
+  static volatile _Alignas(256*256) uint8_t SUM[256][256];
+  static volatile _Alignas(256*256) uint8_t CARRY[256][256];
+
+
+  for (int i = 0; i < 256; i++) {
+    for (int j = 0; j < 256; j++) {
+      SUM[i][j] = i + j; 
+      if (i+j >=256) {
+        CARRY[i][j] = 1;
+      } else {
+        CARRY[i][j] = 0;
+      }
+    }
+  }
+  bus_t cb1_label = ctx_label(ctx);
+  cb_t *inc8_first_cb_addr = ctx_here(ctx);
+  // destination is cur control block's next next block's 1st byte 
+  ctx_emit_with(ctx, DST_INC | SRC_INC, bus_rel_fld(cb1_label, 2, FLD_SRC, 0), rhs8, 1);
+  // destination is cur control block's next next block's 0th byte 
+  ctx_emit_with(ctx, DST_INC | SRC_INC, bus_rel_fld(cb1_label, 2, FLD_SRC, 1), lhs8, 1);
+  ctx_emit_with(ctx, DST_INC | SRC_INC, out8, bus(&SUM[0][0]), 1);
+  ctx_emit_with(ctx, DST_INC | SRC_INC, bus_rel_fld(cb1_label, 5, FLD_SRC, 0), rhs8, 1);
+  ctx_emit_with(ctx, DST_INC | SRC_INC, bus_rel_fld(cb1_label, 5, FLD_SRC, 1), lhs8, 1);
+  ctx_emit_with(ctx, DST_INC | SRC_INC, carry8, bus(&CARRY[0][0]), 1);
+
+  return inc8_first_cb_addr;
+
+}
+cb_t *stamp_add8_carry_full(ctx_t *ctx, bus_t out8, bus_t carry8, bus_t lhs8, bus_t rhs8, bus_t carryin) {
+  // Basically the same as stamp_add8, except you need an extra table
+  // You want to write the carry to `carry8`
+  // todo("implement me!");
+  static volatile uint8_t carry8out1, carry8out2, tempout;
+  cb_t *first = ctx_here(ctx);
+  stamp_add8_carry(ctx, bus(&tempout), bus(&carry8out1), lhs8, rhs8); // first add them 
+  // lhs8+rhs8 = tempout ... carry8out1 
+  // tempout+carryin = tempout2... carry8out2
+  stamp_add8_carry(ctx, out8, bus(&carry8out2), carryin, bus(&tempout));
+  stamp_add8(ctx, carry8, bus(&carry8out1), bus(&carry8out2));
+  return first;
 }
 
 void test_add8_carry(dma_ch_t *dma, ctx_t *ctx) {
@@ -123,7 +180,14 @@ cb_t *stamp_add32(ctx_t *ctx, bus_t out32, bus_t lhs32, bus_t rhs32) {
   //    8-bit full adder and then chain the 8-bit full adders into a ripple-carry adder
   //  - it's helpful to remember that in addition, the carried value is always either 0 or 1,
   //    and adding together two carry values NEVER results in a carry of 1
-  todo("implement me!");
+  // todo("implement me!");
+  cb_t *first = ctx_here(ctx);
+  static volatile uint8_t carryout1, carryout2, carryout3, carryout4;
+  stamp_add8_carry(ctx, bus_add(out32, 0), bus(&carryout1), bus_add(lhs32, 0), bus_add(rhs32, 0));
+  stamp_add8_carry_full(ctx, bus_add(out32, 1), bus(&carryout2), bus_add(lhs32, 1), bus_add(rhs32, 1), bus(&carryout1));
+  stamp_add8_carry_full(ctx, bus_add(out32, 2), bus(&carryout3), bus_add(lhs32, 2), bus_add(rhs32, 2), bus(&carryout2));
+  stamp_add8_carry_full(ctx, bus_add(out32, 3), bus(&carryout4), bus_add(lhs32, 3), bus_add(rhs32, 3), bus(&carryout3));
+  return first;
 }
 
 void test_add32(dma_ch_t *dma, ctx_t *ctx) {

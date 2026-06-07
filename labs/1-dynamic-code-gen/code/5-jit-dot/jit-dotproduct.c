@@ -18,7 +18,8 @@ void jit_init(void) {
     jit_arena = arena_mk(1024*1024);
 }
 
-
+static int check = 0;
+static int cnt = 0;
 // given in a vector <b> and generate a dot-product routine specialized
 // to <b>'s -zero values: 
 //    - hardcode's <b>'s values in the instruction stream;
@@ -66,7 +67,14 @@ vec_fn_t jit_dot(uint32_t *b, unsigned n) {
                is called)
             3. use the multiply accumulate instruction.
          */
-        todo("implement this code\n");
+        // todo("implement this code\n");
+        // 1. load in ith value of a into a_i register. a is known at runtime. so we must load from memory
+        *(cp++) = armv6_ldr_off12(a_i, a, 4*i);
+        // 2. b is known at runtime. we will just put constant or immediate b[i] into reg using load_imm32
+        // WE ARE SAVING INSTRUCTION
+        cp = armv6_load_imm32(cp, b_i, b[i]);
+        // 3. mla
+        *cp++ = armv6_mla(sum, a_i, b_i, sum);
     }
 
     // can get rid of this by changing the last instruction.

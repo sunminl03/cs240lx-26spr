@@ -30,6 +30,11 @@ MK_FN(pixie_switchto_user_asm)
     @ r3 is caller-saved.
     mrs r3, cpsr 
 
+    @ TODO: before switching to user mode, initialize cycle count 
+    @ use dummy thread reg  
+    mov r4, #0
+    mcr p15, 0, r4, c13, c0, 2 
+
     @ switch to user mode
     cps #USER_MODE
     @ required before mode switch guaranteed
@@ -169,6 +174,20 @@ MK_FN(pixie_switchto_super_asm)
         pop   {r0-r12,lr};                  \
         movs    pc, lr 
 
+#define MK_TRAMPOLINE_PREFETCH_ABORT(name, offset, fn) \
+    name:                                             \
+        mrc p15, 0, sp, c15, c12, 1;                  \
+        mcr p15, 0, sp, c13, c0, 2;                   \
+        sub   lr, lr, #(offset);                      \
+        mov sp, #INT_STACK_ADDR ;                     \
+        push  {r0-r12, lr};                           \
+        mov   r0, lr;                                 \
+        bl    fn;                                     \
+        pop   {r0-r12, lr};                           \
+        mrc p15, 0, sp, c15, c12, 1;                  \
+        mcr p15, 0, sp, c13, c0, 3;                   \
+        movs  pc, lr                              
+
 @ call the default handlers and blow up.  override if you
 @ want to do something fancier.
 MK_TRAMPOLINE(reset,            4, reset_vector)
@@ -178,7 +197,7 @@ MK_TRAMPOLINE(interrupt,        4, int_vector)
 
 @ note: you'll want to customize this trampoline yourself 
 @ so you can have clean copies of the PMU counters.
-MK_TRAMPOLINE(prefetch_abort,   4, prefetch_abort_vector)
+MK_TRAMPOLINE_PREFETCH_ABORT(prefetch_abort,   4, prefetch_abort_vector)
 
 @ we only expect <prefetch_abort> and <syscall> to get invoked.
 @ everything else will call a panic handler that dies (see

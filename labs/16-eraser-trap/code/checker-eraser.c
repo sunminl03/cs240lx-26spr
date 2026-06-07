@@ -21,7 +21,7 @@ typedef struct {
 
 _Static_assert(sizeof(state_t) == 4, "invalid size");
 
-
+static uint8_t *shadow_base = 0;
 
 
 _Static_assert((SH_INVALID ^ SH_VIRGIN ^ SH_FREED ^ SH_SHARED
@@ -73,8 +73,10 @@ static inline int in_heap(uint32_t addr) {
 static state_t *sh_lookup(uint32_t addr) {
     if(!in_heap(addr))
         return 0;
-
-    return &state;
+    // added: shadow mem stores the states for each mem segment.
+    uint32_t offset = (addr >> 2 << 2) - (uint32_t)kmalloc_heap_start();
+    return (state_t *)(offset + (uint32_t)shadow_base);
+    // return &state;
 }
 static state_t *sh_lookup_ptr(void *addr) {
     return sh_lookup((uint32_t)addr);
@@ -85,11 +87,15 @@ static state_t *sh_lookup_ptr(void *addr) {
 // you'll need to change this for multiple allocations.
 static void sh_mark_range(void *addr, uint32_t nbytes, unsigned state) {
     // again we assume one allocation.
-    assert(nbytes == 4);
+    // assert(nbytes == 4);
+    for (uint32_t i = (uint32_t)addr; i < (uint32_t)addr+nbytes; i+=4) {
+        state_t *s = sh_lookup(i);
+        s->state = state;
+    }
 
-    state_t *s = sh_lookup_ptr(addr);
-    assert(s);
-    s->state = state;
+    // state_t *s = sh_lookup_ptr(addr);
+    // assert(s);
+    // s->state = state;
 }
 
 // called on each load/store to <addr>: intersect <addr>'s 
@@ -97,11 +103,19 @@ static void sh_mark_range(void *addr, uint32_t nbytes, unsigned state) {
 static int 
 ls_intersect(state_t *s, int load_p, uint32_t pc, uint32_t addr) {
     assert(cur_thread_id);
+    // added: if the thread that initialized is accessing mem, don't check intersection 
+    // if (state.state == SH_EXCLUSIVE) {
+    //     output("exclusive\n");
+    //     return 1;
+    // }
     int *ls = lockset[cur_thread_id];
+    output("lockset[%d] = %d\n", cur_thread_id, *ls);
 
     // for level 0: if we hold any lock assume we're ok.
     if(ls == 0)
         etrace("empty lockset for addr=%p!\n", addr);
+    if((unsigned short)(uint32_t)ls != sh_lookup(addr)->ls) 
+        error("no intersection\n");
     return ls != 0;
 }
 
@@ -112,7 +126,8 @@ static int shadow_check_st(uint32_t pc, uint32_t addr) {
     if(!s)
         error("untracked load: pc=[%p]: addr=%p: failing right away\n", pc, addr);
 
-    if(!ls_intersect(s, 0, pc, addr))
+    output("state = %s\n", s->state);
+    if(!ls_intersect(s, 0, pc, addr) && s->state !=SH_SHARED)
         error("store error at pc=[%p], addr=%p: lockset empty!\n", pc, addr);
 
     etrace("pc=[%p], store to addr=%p passed check\n", pc, addr);
@@ -126,7 +141,7 @@ static int shadow_check_ld(uint32_t pc, uint32_t addr) {
     if(!s)
         panic("untracked store: pc=%p addr=%p: failing right away\n", pc, addr);
 
-    if(!ls_intersect(s, 1, pc, addr))
+    if(!ls_intersect(s, 1, pc, addr) && s->state !=SH_SHARED)
         panic("load error at pc=%p, addr=%p: lockset empty!\n", pc, addr);
 
     etrace("pc=%p, load of addr=%p passed check\n", pc, addr);
@@ -155,12 +170,39 @@ static int eraser_handler(void *data, fault_ctx_t *f) {
     if(!in_heap(addr))
         panic("\t%x is not a heap addr: how are we faulting?\n", addr);
 
-    if(load_p) {
-        if(!shadow_check_ld(pc, addr))
-            panic("shadow failed\n");
-    } else {
-        if(!shadow_check_st(pc, addr))
-            panic("shadow failed\n");
+    state_t * w_state = sh_lookup(addr); 
+
+    if(load_p) { // LOAD
+        if (w_state->state == SH_VIRGIN || (w_state->tid == cur_thread_id && w_state->state == SH_EXCLUSIVE)) {
+            output("exclusive\n");
+            w_state->state = SH_EXCLUSIVE;
+            w_state->tid = cur_thread_id;
+        } else if (w_state->state == SH_EXCLUSIVE) { // second thread accessing for the first time
+            w_state->state = SH_SHARED;
+            w_state->ls = (unsigned short)(uint32_t)lockset[cur_thread_id];
+        } else {
+            output("not exclusive\n");
+            if(!shadow_check_ld(pc, addr))
+                panic("shadow failed\n");
+            // w_state->ls = (unsigned short)(uint32_t)lockset[cur_thread_id];
+        }
+    } else { // STORE
+        output("here outside ifstatement\n");
+        // if the word is virgin or the first thread is accessing again, we change the mode and save the tid 
+        if (w_state->state == SH_VIRGIN || (w_state->tid == cur_thread_id && w_state->state == SH_EXCLUSIVE)) {
+            output("exclusive\n");
+            w_state->state = SH_EXCLUSIVE;
+            w_state->tid = cur_thread_id;
+        } else if (w_state->state == SH_EXCLUSIVE) { // second thread accessing for the first time
+            w_state->state = SH_SHARED_MOD;
+            output("lockset for this thread is %d\n", *lockset[cur_thread_id]);
+            w_state->ls = (unsigned short)(uint32_t)lockset[cur_thread_id];
+        } else { // if second thread is accessing for the second time, 
+            output("not exclusive\n");
+            if(!shadow_check_st(pc, addr))
+                panic("shadow failed\n");
+            // w_state->ls = (unsigned short)(uint32_t)lockset[cur_thread_id];
+        }
     }
 
     // rerun the memory instruction.
@@ -176,10 +218,11 @@ static int eraser_handler(void *data, fault_ctx_t *f) {
 // Virgin).
 void eraser_mark_alloc(void *addr, unsigned nbytes) {
     // only handle one allocation right now: hou should change this.
-    assert(nbytes == 4);
-    assert(state.state == SH_INVALID);
+    // assert(nbytes == 4);
+    // assert(state.state == SH_INVALID);
 
     assert(nbytes % 4 == 0);
+    output("here");
     etrace("in mark_alloc: addr=%p, nbytes=%d\n", addr, nbytes);
     sh_mark_range(addr, nbytes, SH_VIRGIN);
 }
@@ -195,17 +238,27 @@ void eraser_mark_free(void *addr, unsigned nbytes) {
 // called on lock to add <l> to current thread's lockset.
 void eraser_lock(void *l) {
     int id = cur_thread_id;
+    // if (state.state == SH_VIRGIN || state.tid == id) {
+    //     state.state = SH_EXCLUSIVE;
+    //     state.tid = id;
+    // } else {
+    // state.state = SH_SHARED_MOD;
     assert(id < MAXTHREADS);
 
     if(lockset[id])
         panic("thread id=%d: only handling one lock: <%p>\n", id, l);
     etrace("acquired lock.addr=<%p>\n", l);
     lockset[id] = l;
+    // }
+    
 }
 
 // called on unlock to remove <l> from current thread's lockset.
 void eraser_unlock(void *l) {
     int id = cur_thread_id;
+    if (state.tid == id) {
+        return;
+    }
     assert(id < MAXTHREADS);
 
     if(lockset[id] != l)
@@ -225,8 +278,9 @@ void eraser_set_thread_id(int tid) {
 int eraser_state(void *addr) {
     assert(addr);
     assert(sbrk_in_heap((uint32_t)addr));
-    // only handle one allocation right now: will need to change.
-    return state.state;
+    state_t *s = sh_lookup_ptr(addr);
+    assert(s);
+    return s->state;
 }
 
 // initialize the memtrace system.
@@ -236,7 +290,9 @@ void eraser_init(void) {
     //      - key: client can't corrupt b/c we'd trap.
     // memtrace_init_default(eraser_handler);
     memtrace_init(0, eraser_handler, 0, dom_trap);
-
+    // allocating shadow memory. same size as heap
+    uint32_t heap_size = (uint32_t)kmalloc_heap_end() - (uint32_t)kmalloc_heap_start();
+    shadow_base = (uint8_t *)kmalloc_heap_end();
     // change this if you want to see whats going on.
     eraser_verbose_set(0);
 

@@ -11,6 +11,14 @@
 
 #include "breakpoint.h"
 #include "cpsr-util.h"
+#include "memmap.h"
+
+// TODO: array to hold instruction count 
+static unsigned hist_n, pc_min, pc_max;
+static volatile unsigned *hist = 0;
+
+static volatile unsigned *hist_cnt = 0;
+
 
 // counter of the number of instructions.
 static volatile unsigned n_inst = 0;
@@ -39,11 +47,23 @@ void pixie_verbose(int verbose_p) {
 // called on each single-step exception. see
 // <ss-pixie-asm.S>
 void prefetch_abort_vector(uint32_t pc) {
+    uint32_t start_cnt, end_cnt;
+    asm volatile("MRC p15, 0, %0, c13, c0, 2" : "=r"(start_cnt)); // start cycle count of current instruction
+    // trace("start_cnt = %u\n", start_cnt);
+    asm volatile("MRC p15, 0, %0, c13, c0, 3" : "=r"(end_cnt)); // the end cycle count of previous instruction
+    // trace("end_cnt = %u\n", end_cnt);
+
     if(!brkpt_fault_p())
         panic("have a non-breakpoint fault\n");
 
     n_inst++;
     pixout("%d: ss fault: pc=%x\n", n_inst, pc);
+    // TODO: In the fault handler, use the program counter value (register 15) to index into this array and increment the associated count.
+    uint32_t index = (pc-pc_min) >> 2;
+    hist[index] += 1;
+    if (index > 0) {
+        hist_cnt[index - 1]+= (start_cnt - end_cnt);
+    }
 
     // set a mismatch on the fault pc so that we can run it.
     brkpt_mismatch_set(pc);
@@ -117,7 +137,19 @@ void pixie_start(void) {
     if(rem != 0)
         panic("interrupt vec not aligned to 32 bytes!\n", rem);
     vector_base_asm_set(vec);
-
+    
+    // TODO: allocate a table with one entry for each instruction
+    // Use kmalloc (or, better: your ckalloc!) to allocate an array at least as big as the code. 
+    // (If you use kmalloc make sure to do kmalloc_init first.) 
+    // Compute the code size using the labels defined in libpi/memmap 
+    // (we give C definitions in libpi/include/memmap.h)
+    uint32_t oneMB = 1024*1024;
+    kmalloc_init_set_start((void*)oneMB, oneMB);
+    pc_min =(unsigned int) __code_start__;
+    pc_max = (unsigned int) __code_end__;
+    hist_n = (pc_max - pc_min) >> 2;
+    hist = kmalloc(hist_n * sizeof(hist[0]));
+    hist_cnt = kmalloc(hist_n * sizeof(hist[0]));
 
     // enable mismatching.  note: we are currently
     // at privileged mode so won't start til we 
@@ -165,5 +197,18 @@ unsigned pixie_stop(void) {
 }
 
 void pixie_dump(unsigned N) {
-    todo("build this");
+    // todo("build this");
+    for (int i = 0; i < hist_n; i++) {
+        if (hist[i] > N) {
+            printk("pc=%x count=%u average cycles per instruction=%u\n", pc_min + (i << 2), hist[i],  hist_cnt[i]/hist[i]);
+        }
+        // printk("pc= %x average cycles per instruction=%u\n", pc_min + (i << 2), hist[i], hist_cnt[i]/hist[i]);
+    }
+}
+
+void pixie_reset(void) {
+    for (int i = 0; i < hist_n; i++) {
+        hist[i] = 0;
+        hist_cnt[i] = 0;
+    }
 }

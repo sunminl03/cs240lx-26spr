@@ -1,0 +1,348 @@
+DEBUG:done with options: dev name=</dev/cu.usbserial-110>, pi-prog=<./tests/part1-test7-bug.bin>, trace=0
+opened tty port </dev/cu.usbserial-110>.
+DEBUG:my-install: tty-usb=</dev/cu.usbserial-110> program=<./tests/part1-test7-bug.bin>: about to boot
+TRACE:simple_boot: sending 11932 bytes, crc32=15ed4abc
+BOOT:waiting for a start
+BOOT:bootloader: Done.
+test4: use after free
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:notmain:SUCCESS heap checked out
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 65 blocks, detected no errors
+TRACE:ck_heap_errors:going to check heap
+TRACE:mem_check:ERROR:Freed block 2 [0x101c68] corrupted at offset -80
+TRACE:hdr_print:	logical block id=2, [addr=0x101d10] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 3 [0x101af8] corrupted at offset 17
+TRACE:hdr_print:	logical block id=3, [addr=0x101ba0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:check_list:	Wrote block after free!
+TRACE:mem_check:ERROR:Freed block 4 [0x101988] corrupted at offset 52
+TRACE:hdr_print:	logical block id=4, [addr=0x101a30] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:check_list:	Wrote block after free!
+TRACE:mem_check:ERROR:Freed block 5 [0x101818] corrupted at offset -51
+TRACE:hdr_print:	logical block id=5, [addr=0x1018c0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 6 [0x1016a8] corrupted at offset 20
+TRACE:hdr_print:	logical block id=6, [addr=0x101750] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:check_list:	Wrote block after free!
+TRACE:mem_check:ERROR:Freed block 7 [0x101538] corrupted at offset 53
+TRACE:hdr_print:	logical block id=7, [addr=0x1015e0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:check_list:	Wrote block after free!
+TRACE:mem_check:ERROR:Freed block 8 [0x1013c8] corrupted at offset 102
+TRACE:hdr_print:	logical block id=8, [addr=0x101470] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 9 [0x101258] corrupted at offset -118
+TRACE:hdr_print:	logical block id=9, [addr=0x101300] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 10 [0x1010e8] corrupted at offset -123
+TRACE:hdr_print:	logical block id=10, [addr=0x101190] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 11 [0x100f78] corrupted at offset 20
+TRACE:hdr_print:	logical block id=11, [addr=0x101020] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:check_list:	Wrote block after free!
+TRACE:mem_check:ERROR:Freed block 12 [0x100e08] corrupted at offset -88
+TRACE:hdr_print:	logical block id=12, [addr=0x100eb0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 13 [0x100c98] corrupted at offset 77
+TRACE:hdr_print:	logical block id=13, [addr=0x100d40] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 14 [0x100b28] corrupted at offset -116
+TRACE:hdr_print:	logical block id=14, [addr=0x100bd0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 15 [0x1009b8] corrupted at offset 22
+TRACE:hdr_print:	logical block id=15, [addr=0x100a60] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:check_list:	Wrote block after free!
+TRACE:mem_check:ERROR:Freed block 16 [0x100848] corrupted at offset 62
+TRACE:hdr_print:	logical block id=16, [addr=0x1008f0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:check_list:	Wrote block after free!
+TRACE:mem_check:ERROR:Freed block 17 [0x1006d8] corrupted at offset -19
+TRACE:hdr_print:	logical block id=17, [addr=0x100780] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 18 [0x100568] corrupted at offset 74
+TRACE:hdr_print:	logical block id=18, [addr=0x100610] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 19 [0x1003f8] corrupted at offset -19
+TRACE:hdr_print:	logical block id=19, [addr=0x1004a0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 20 [0x100288] corrupted at offset 61
+TRACE:hdr_print:	logical block id=20, [addr=0x100330] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:check_list:	Wrote block after free!
+TRACE:mem_check:ERROR:Freed block 21 [0x100118] corrupted at offset -90
+TRACE:hdr_print:	logical block id=21, [addr=0x1001c0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 22 [0x103e98] corrupted at offset -123
+TRACE:hdr_print:	logical block id=22, [addr=0x103f40] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 23 [0x103d28] corrupted at offset -25
+TRACE:hdr_print:	logical block id=23, [addr=0x103dd0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 24 [0x103bb8] corrupted at offset -16
+TRACE:hdr_print:	logical block id=24, [addr=0x103c60] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 25 [0x103a48] corrupted at offset 136
+TRACE:hdr_print:	logical block id=25, [addr=0x103af0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 26 [0x1038d8] corrupted at offset 67
+TRACE:hdr_print:	logical block id=26, [addr=0x103980] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 27 [0x103768] corrupted at offset -18
+TRACE:hdr_print:	logical block id=27, [addr=0x103810] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 28 [0x1035f8] corrupted at offset 107
+TRACE:hdr_print:	logical block id=28, [addr=0x1036a0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 29 [0x103488] corrupted at offset 142
+TRACE:hdr_print:	logical block id=29, [addr=0x103530] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 30 [0x103318] corrupted at offset -127
+TRACE:hdr_print:	logical block id=30, [addr=0x1033c0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 31 [0x1031a8] corrupted at offset -25
+TRACE:hdr_print:	logical block id=31, [addr=0x103250] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 32 [0x103038] corrupted at offset 145
+TRACE:hdr_print:	logical block id=32, [addr=0x1030e0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 33 [0x102ec8] corrupted at offset 96
+TRACE:hdr_print:	logical block id=33, [addr=0x102f70] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 34 [0x102d58] corrupted at offset 73
+TRACE:hdr_print:	logical block id=34, [addr=0x102e00] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 35 [0x102be8] corrupted at offset 89
+TRACE:hdr_print:	logical block id=35, [addr=0x102c90] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 36 [0x102a78] corrupted at offset 148
+TRACE:hdr_print:	logical block id=36, [addr=0x102b20] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 37 [0x102908] corrupted at offset -23
+TRACE:hdr_print:	logical block id=37, [addr=0x1029b0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 38 [0x102798] corrupted at offset 93
+TRACE:hdr_print:	logical block id=38, [addr=0x102840] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 39 [0x102628] corrupted at offset 135
+TRACE:hdr_print:	logical block id=39, [addr=0x1026d0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 40 [0x1024b8] corrupted at offset 129
+TRACE:hdr_print:	logical block id=40, [addr=0x102560] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 41 [0x102348] corrupted at offset 56
+TRACE:hdr_print:	logical block id=41, [addr=0x1023f0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:check_list:	Wrote block after free!
+TRACE:mem_check:ERROR:Freed block 42 [0x1021d8] corrupted at offset -49
+TRACE:hdr_print:	logical block id=42, [addr=0x102280] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 43 [0x102068] corrupted at offset 162
+TRACE:hdr_print:	logical block id=43, [addr=0x102110] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 44 [0x105e98] corrupted at offset 117
+TRACE:hdr_print:	logical block id=44, [addr=0x105f40] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 45 [0x105d28] corrupted at offset 164
+TRACE:hdr_print:	logical block id=45, [addr=0x105dd0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 46 [0x105bb8] corrupted at offset 79
+TRACE:hdr_print:	logical block id=46, [addr=0x105c60] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 47 [0x105a48] corrupted at offset 165
+TRACE:hdr_print:	logical block id=47, [addr=0x105af0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 48 [0x1058d8] corrupted at offset -31
+TRACE:hdr_print:	logical block id=48, [addr=0x105980] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 49 [0x105768] corrupted at offset -30
+TRACE:hdr_print:	logical block id=49, [addr=0x105810] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 50 [0x1055f8] corrupted at offset -118
+TRACE:hdr_print:	logical block id=50, [addr=0x1056a0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 51 [0x105488] corrupted at offset 76
+TRACE:hdr_print:	logical block id=51, [addr=0x105530] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 52 [0x105318] corrupted at offset 172
+TRACE:hdr_print:	logical block id=52, [addr=0x1053c0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 53 [0x1051a8] corrupted at offset 84
+TRACE:hdr_print:	logical block id=53, [addr=0x105250] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 54 [0x105038] corrupted at offset -26
+TRACE:hdr_print:	logical block id=54, [addr=0x1050e0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 55 [0x104ec8] corrupted at offset 63
+TRACE:hdr_print:	logical block id=55, [addr=0x104f70] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:check_list:	Wrote block after free!
+TRACE:mem_check:ERROR:Freed block 56 [0x104d58] corrupted at offset -112
+TRACE:hdr_print:	logical block id=56, [addr=0x104e00] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 57 [0x104be8] corrupted at offset 79
+TRACE:hdr_print:	logical block id=57, [addr=0x104c90] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 58 [0x104a78] corrupted at offset -81
+TRACE:hdr_print:	logical block id=58, [addr=0x104b20] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 59 [0x104908] corrupted at offset 138
+TRACE:hdr_print:	logical block id=59, [addr=0x1049b0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 60 [0x104798] corrupted at offset -85
+TRACE:hdr_print:	logical block id=60, [addr=0x104840] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 61 [0x104628] corrupted at offset 149
+TRACE:hdr_print:	logical block id=61, [addr=0x1046d0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 62 [0x1044b8] corrupted at offset 157
+TRACE:hdr_print:	logical block id=62, [addr=0x104560] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 63 [0x104348] corrupted at offset -86
+TRACE:hdr_print:	logical block id=63, [addr=0x1043f0] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 64 [0x1041d8] corrupted at offset 159
+TRACE:hdr_print:	logical block id=64, [addr=0x104280] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:mem_check:ERROR:Freed block 65 [0x104068] corrupted at offset -62
+TRACE:hdr_print:	logical block id=65, [addr=0x104110] nbytes=64
+TRACE:hdr_print:	Block allocated at: tests/part1-test7-bug.c:notmain:24
+TRACE:ck_heap_errors:checked 65 blocks, detected 64 errors
+TRACE:notmain:SUCCESS heap checked out
+DONE!!!
+
+bootloader: pi exited.  cleaning up

@@ -4,8 +4,8 @@ PROGS = header.c
 TTYUSB = 
 BOOTLOADER = my-install
 
-MEMMAP=./memmap
-
+# MEMMAP=./memmap
+MEMMAP=./memmap.header
 # uncomment if you want it to automatically run.
 RUN=1
 

@@ -11,8 +11,9 @@ void *test(void) {
         struct list *next;
         struct list *prev;
     } *h = 0;
-
+    output("inside test\n");
     for(int i = 0; i < 100; i++) {
+        output("inside for loop: i = %d\n", i);
         struct list *e = ckalloc(sizeof *h);
         memset(e, 0, sizeof *e);
         e->x = 0;

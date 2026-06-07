@@ -9,14 +9,23 @@
 //
 // 1024x512: captures all detail the touch hardware can provide.
 // 1024*3 = 3072 bytes/row — 4-byte aligned, no BMP row padding needed.
-#define SIG_W 1024
-#define SIG_H 512
+#define SIG_W 128
+#define SIG_H 64
 
 // --- internal state (do not use directly) ---
 static uint8_t     *sig_pixels = 0;   // heap-allocated in sig_init()
 static int         sig_counter = 0;
 static fat32_fs_t  sig_fs;
 static pi_dirent_t sig_root;
+
+// Convert raw TSC2007 readings into visual screen coordinates.f
+// The touch panel is mounted 90 degrees clockwise and mirrored from the display.
+static inline void sig_map_touch_to_pixel(uint16_t tx, uint16_t ty,
+                                          uint32_t w, uint32_t h,
+                                          uint32_t *px, uint32_t *py) {
+    *px = (uint32_t)(4095 - ty) * w / 4096;
+    *py = (uint32_t)(4095 - tx) * h / 4096;
+}
 
 // Fill the pixel buffer white. Call after each save.
 void sig_clear(void) {
@@ -63,8 +72,8 @@ void sig_init(void) {
 // tx, ty are raw TSC2007 coordinates (0-4095). Only call when Z > threshold.
 // Draws a 3x3 dot so strokes are visible at 1024x512.
 void sig_draw_point(uint16_t tx, uint16_t ty) {
-    uint32_t px = (uint32_t)tx * SIG_W / 4096;
-    uint32_t py = (uint32_t)ty * SIG_H / 4096;
+    uint32_t px, py;
+    sig_map_touch_to_pixel(tx, ty, SIG_W, SIG_H, &px, &py);
     for (int dy = 0; dy <= 2; dy++) {
         for (int dx = 0; dx <= 2; dx++) {
             uint32_t x = px + dx, y = py + dy;

@@ -27,6 +27,16 @@
 #include "rpi.h"
 #include "mpu-6050.h"
 
+// EXTENSION
+// pg. 31
+int temp_measure(uint8_t addr) {
+    uint8_t temp_high = imu_rd(addr, 0x41);
+    uint8_t temp_low = imu_rd(addr, 0x42);
+    int temp = (int16_t)(temp_high << 8) | temp_low;
+    int temp_c = (temp / 340.0) + 36.53;
+    return temp_c;
+
+}
 /**********************************************************************
  * 1. i2c helpers (see i2c.h)  for reading and write individual registers,
  * and for doing burst reads of N registers.
@@ -122,8 +132,9 @@ imu_xyz_t accel_scale(accel_t *h, imu_xyz_t xyz) {
 // pull the reading into a circular buffer
 // (similar to device lab).
 int accel_has_data(const accel_t *h) {
-    todo("check that have data");
-    return 1;
+
+    // todo("check that have data");
+    return imu_rd(h->addr, 0x3A) & 1; // pg 29: bit 0 of INT_STATUS tells us 
 }
 
 
@@ -133,7 +144,10 @@ int accel_has_data(const accel_t *h) {
 // i'd suggest playing w/ gdb or small C programs to see that what
 // C does matches your intuition.
 static short mg_raw(uint8_t lo, uint8_t hi) {
-    todo("combine both bytes (make sure sign extended)");
+    // todo("combine both bytes (make sure sign extended)");
+    short result = hi << 8;
+    result = (int16_t)(result | lo);
+    return result;
 }
 
 // sanity testing code.
@@ -170,7 +184,11 @@ accel_t mpu6050_accel_init(uint8_t addr, unsigned accel_g) {
     test_mg(-1000, 0xbf, 0xf7, 2);
 
     // initialized your accel to 2g (accel_confi_reg)
-    todo("setup accel with 2g");
+    // todo("setup accel with 2g");
+    uint8_t accel_config_val = imu_rd(addr, accel_config_reg);
+    accel_config_val= bit_clr(accel_config_val, 3);
+    accel_config_val= bit_set(accel_config_val, 4); // pg 15: set bits 3, 4 to 0 to set to 2g
+    imu_wr(addr, accel_config_reg, accel_config_val);
 
     output("accel_config_reg=%b\n", imu_rd(addr, accel_config_reg));
     return (accel_t) { .addr = addr, .g = g, .hz = 20 };
@@ -187,7 +205,10 @@ void mpu6050_reset(uint8_t addr) {
 
     // page 41: to reset device: set bit 7 = 1 in register
     // PWR_MGMT_1 (register 0x6b)
-    todo("reset device");
+    // todo("reset device");
+    uint8_t pwr_mgmt_1_val = imu_rd(addr, 0x6b);
+    pwr_mgmt_1_val = bit_set(pwr_mgmt_1_val, 7); // pg 41: set reset to 1
+    imu_wr(addr, 0x6b, pwr_mgmt_1_val);
 
     // XXX: we should read different registers and see that they
     // went back to startup.
@@ -202,7 +223,12 @@ void mpu6050_reset(uint8_t addr) {
     // if you do *NOT* do this, then the device we have does not work.
     // according to my reading of the data sheet, the value of 0x6b should
     // be 0 after reset.  so i don't get this.
-    todo("clear sleep mode");
+    // todo("clear sleep mode");
+    pwr_mgmt_1_val = imu_rd(addr, 0x6b);
+    pwr_mgmt_1_val= bit_clr(pwr_mgmt_1_val, 6); // pg 41: clear sleep in bit 6
+    imu_wr(addr, 0x6b, pwr_mgmt_1_val);
+
+
 
     delay_ms(100);
 
@@ -212,7 +238,12 @@ void mpu6050_reset(uint8_t addr) {
     //   - fifo
     // not sure if redundant after device reset --- datasheet
     // unclear --- so we do to be sure.
-    todo("reset all these");
+    // todo("reset all these");
+    uint8_t user_ctrl_val = imu_rd(addr, 0x6a);
+    user_ctrl_val = bit_set(user_ctrl_val, 2); // pg 39: reset fifo
+    user_ctrl_val = bit_set(user_ctrl_val, 1); // pg 39: reset i2c master
+    user_ctrl_val = bit_set(user_ctrl_val, 0); // pg 39: the signal path
+    imu_wr(addr, 0x6a, user_ctrl_val);
 
     delay_ms(100);
 
@@ -220,9 +251,31 @@ void mpu6050_reset(uint8_t addr) {
     // (INT_ENABLE) after you config (p27):
     // - latch to be held high until cleared;
     // - read to clear it.
-    todo("enable IMU interrupts so you can tell that data is ready");
-}
+    // todo("enable IMU interrupts so you can tell that data is ready");
+    uint8_t int_pin_cfg_val = imu_rd(addr, 0x37);
+    int_pin_cfg_val = bit_set(int_pin_cfg_val, 5); // pg 27: latch 
+    int_pin_cfg_val = bit_set(int_pin_cfg_val, 4); // pg 27: read to clear it 
+    imu_wr(addr, 0x37, int_pin_cfg_val);
 
+    uint8_t int_enable_val = imu_rd(addr, INT_ENABLE);
+    int_enable_val = bit_set(int_enable_val, 0); // pg 28: enable interrupts
+    imu_wr(addr, INT_ENABLE, int_enable_val);
+    output("int_enable is %d\n", int_enable_val);
+
+}
+imu_xyz_t accel_rd_selftest(const accel_t *h) {
+    uint8_t addr = h->addr;
+    uint8_t regs[4];
+    // wait until data.
+    while(!accel_has_data(h))
+        ;
+    int imu_rd_n_val = imu_rd_n(addr, 0x0D, regs, 4);
+    int x = (regs[0] >> 3) | ((regs[3] & 0b110000) >> 4);
+    int y = (regs[1] >> 3) | ((regs[3] & 0b1100) >> 2);
+    int z = (regs[2] >> 3) | (regs[3] & 0b11);
+    
+    return xyz_mk(x,y,z);
+}
 // block until there is data and then return it (raw)
 //
 // p26 interprets the data.
@@ -234,11 +287,9 @@ imu_xyz_t accel_rd(const accel_t *h) {
 
     uint8_t addr = h->addr;
     uint8_t regs[6];
-
     // wait until data.
     while(!accel_has_data(h))
         ;
-
     // read in from the IMU using imu_rd_n.
     //
     // NOTE: from page 32: the "high" byte has a register 
@@ -260,7 +311,11 @@ imu_xyz_t accel_rd(const accel_t *h) {
     //  - if this doesn't work, read regs one at a time.
     //  - you'll have to comine the two 8-bit unsigned
     //    regs into a signed 16 bit number using <mg_raw>
-    todo("implement burst reads and return as unscaled x,y,z");
+    // todo("implement burst reads and return as unscaled x,y,z");
+    int imu_rd_n_val = imu_rd_n(addr, 0x3b, regs, 6); // pg 6. read 6 registers starting from 0x3b.
+    x = mg_raw(regs[1], regs[0]);
+    y = mg_raw(regs[3], regs[2]);
+    z = mg_raw(regs[5], regs[4]);
     
     return xyz_mk(x,y,z);
 }
@@ -289,7 +344,7 @@ mdps_scaled(int x, int dps_scale) {
 
 // not sure this is right: use the code below?
 imu_xyz_t gyro_scale(gyro_t *h, imu_xyz_t xyz) {
-    int dps = h->dps;
+    int dps = dps_to_scale(h->dps);
     int x = mdps_scaled(dps, xyz.x);
     int y = mdps_scaled(dps, xyz.y);
     int z = mdps_scaled(dps, xyz.z);
@@ -315,7 +370,7 @@ static int mdps_scale_deg2(int deg, int dps) {
     if(dps == 250)
         return (deg * 250) / SHRT_MAX;
     else if(dps == 500)
-        return (deg * 500) / SHRT_MAX;
+        return (deg * 500) / (SHRT_MAX);
     else
         panic("bad dps=%d\n", dps);
 }
@@ -341,6 +396,28 @@ static void test_dps(int expected_i, uint8_t h, uint8_t l, int dps) {
     else
         output("expected %d, got = %d, (within +/-%d) scale=%d\n", expected_i, s_i, tol, dps);
 }
+// added to config self test
+void mpu6050_gyro_selftest_init(uint8_t addr) {
+    uint32_t gyro_config_val = imu_rd(addr, GYRO_CONFIG); // pg 13: turn all self test bits on
+    gyro_config_val = bit_set(gyro_config_val, 7);
+    gyro_config_val = bit_set(gyro_config_val, 6);
+    gyro_config_val = bit_set(gyro_config_val, 5);
+    imu_wr(addr, GYRO_CONFIG, gyro_config_val);
+    output("done setting selftest config\n");
+    return;
+}
+
+void mpu6050_accel_selfcheck_init(uint8_t addr) { 
+    uint32_t accel_config_val = imu_rd(addr, 0x1C);
+    // pg 15: turn on self check
+    accel_config_val = bit_set(accel_config_val, 7);
+    accel_config_val = bit_set(accel_config_val, 6);
+    accel_config_val = bit_set(accel_config_val, 5);
+    imu_wr(addr, 0x1C, accel_config_val);
+    output("done setting selftest config\n");
+    return;
+}
+
 
 gyro_t mpu6050_gyro_init(uint8_t addr, unsigned gyro_dps) { 
     // device independent testing.
@@ -360,14 +437,32 @@ gyro_t mpu6050_gyro_init(uint8_t addr, unsigned gyro_dps) {
     }
 
     // you'll need to set CONFIG (p13) and GYRO_CONFIG (p14)
-    todo("initialize the gyro");
+    // todo("initialize the gyro");
+    // uint32_t config_val = imu_rd(addr, CONFIG);
+
+    uint32_t gyro_config_val = imu_rd(addr, GYRO_CONFIG); // pg 14: full scale range of the gyroscope 
+    if (dps == 250) {
+        gyro_config_val = bit_clr(gyro_config_val, 3);
+        gyro_config_val = bit_clr(gyro_config_val, 4);
+    } else if (dps == 500) {
+        gyro_config_val = bit_set(gyro_config_val, 3);
+        gyro_config_val = bit_clr(gyro_config_val, 4);
+    } else if (dps == 1000) {
+        gyro_config_val = bit_clr(gyro_config_val, 3);
+        gyro_config_val = bit_set(gyro_config_val, 4);
+    } else if (dps == 2000) {
+        gyro_config_val = bit_set(gyro_config_val, 3);
+        gyro_config_val = bit_set(gyro_config_val, 4);
+    }
+    imu_wr(addr, GYRO_CONFIG, gyro_config_val);
+    output("gyro_config_reg=%b\n", imu_rd(addr, GYRO_CONFIG));
     return (gyro_t) { .addr = addr, .dps = dps,  };
 }
 
 // use int or fifo to tell when data.
 int gyro_has_data(const gyro_t *h) {
-    todo("implement this");
-    return 1;
+    // todo("implement this");
+    return imu_rd(h->addr, 0x3A) & 1; // pg 29: bit 0 of INT_STATUS tells us 
 }
 
 // return a single raw gyro reading.
@@ -383,6 +478,23 @@ imu_xyz_t gyro_rd(const gyro_t *h) {
     int x=0,y=0,z=00;
 
     // you'll need to combine the 8-bit regs into a 16-bit using <mg_raw>
-    todo("implement this");
+    // todo("implement this");
+    uint8_t *v = NULL;
+    int imu_rd_n_val = imu_rd_n(addr, 0x43, v, 6); // pg 6. read 6 registers starting from 0x3b.
+    x = mg_raw(v[1], v[0]);
+    y = mg_raw(v[3], v[2]);
+    z = mg_raw(v[5], v[4]);
+
     return xyz_mk(x,y,z);
 }
+
+imu_xyz_t gyro_rd_selftest(const gyro_t *h) {
+    uint8_t *v = NULL;
+    int imu_rd_n_val = imu_rd_n(h->addr, 0xD, v, 3);
+    int x = v[0] & 0b11111;
+    int y = v[1] & 0b11111;
+    int z = v[2] & 0b11111;
+
+    return xyz_mk(x,y,z);
+}
+
